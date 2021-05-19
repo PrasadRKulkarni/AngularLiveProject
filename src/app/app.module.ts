@@ -12,6 +12,9 @@ import { CoursesModule } from './courses/courses.module';
 import { StaticpagesModule } from './staticpages/staticpages.module';
 import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
+import { Employeeservice } from './auth/employeeservice';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,9 +30,11 @@ import { AuthModule } from './auth/auth.module';
     StaticpagesModule,
     AdminModule,
     AuthModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [Employeeservice],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

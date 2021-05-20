@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Employee } from '../employee';
 import { Employeeservice } from '../employeeservice';
 import { Loginemployee } from './loginemployee';
 
@@ -25,6 +26,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   massage: string;
   Error = false;
+  employee: Employee;
 
   constructor(private employeeservice: Employeeservice,
     private formbuilder: FormBuilder,
@@ -33,12 +35,14 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    localStorage.removeItem("Employee");
+
     this.setFormState();
   }
 
   setFormState(): void {
     this.loginForm = this.formbuilder.group({
-      Username: ['Prasad', [Validators.required]],
+      Username: ['Prasad@gmail.com', [Validators.required]],
       Password: ['prasad', [Validators.required]]
     })
   }
@@ -49,7 +53,19 @@ export class LoginComponent implements OnInit {
   }
 
   login(loginEmployee: Loginemployee) {
-    this.router.navigate(['dashboard']);
+
+    var success = this.employeeservice.Login(loginEmployee.Username, loginEmployee.Password);
+
+    if (success) {
+      this.loginForm.reset();
+      localStorage.setItem("Employee", JSON.stringify(success));
+      this.router.navigate(['dashboard']);
+    }
+    else {
+      this.Error = true;
+      this.massage = "User ID/Password is incorrect.";
+    }
+
 
     // this.employeeservice.loginemployee(loginEmployee).subscribe(
     //   employee => {

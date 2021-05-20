@@ -13,8 +13,7 @@ export class RegistrationComponent implements OnInit {
   regForm: FormGroup;
   datasaved = false;
   massage: string;
-
-  error: string;
+  error: false;
 
   constructor(private formbuilder: FormBuilder,
     private employeeservice: Employeeservice) { }
@@ -22,6 +21,7 @@ export class RegistrationComponent implements OnInit {
   ngOnInit() {
     this.setFormState();
   }
+
   setFormState(): void {
     this.regForm = this.formbuilder.group({
       LastName: ['', [Validators.required]],
@@ -39,13 +39,25 @@ export class RegistrationComponent implements OnInit {
     this.regForm.reset();
   }
 
+  employee: Employee = {
+    FirstName: null,
+    LastName: null,
+    EmailId: null,
+    Password: null,
+  };
+
   createemployee(employee: Employee) {
-    this.employeeservice.createemployee(employee).subscribe(
-      () => {
-        this.datasaved = true;
-        this.massage = "User Created";
-        this.regForm.reset();
-      }
-    )
+    this.employeeservice.SaveEmpInArray(employee);
+    this.datasaved = true;
+    this.massage = "User Created";
+    this.regForm.reset();
+
+    // this.employeeservice.createemployee(employee).subscribe(
+    //   () => {
+    //     this.datasaved = true;
+    //     this.massage = "User Created";
+    //     this.regForm.reset();
+    //   }
+    // )
   }
 }
